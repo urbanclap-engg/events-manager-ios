@@ -1,0 +1,4 @@
+trigger,eventKey1,eventKey2,keyParent.keyChild
+trigger1,val1,,childVal
+trigger2,val2,devToProvide
+trigger3,,,devToProvide
