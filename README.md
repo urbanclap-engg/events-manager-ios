@@ -11,11 +11,11 @@ PreSetup:
     for that trigger. For example, for UCServer, create a UCServerEvents.csv, 
     which could look something like this:
     
-    trigger             |   schema_type |   event.page  |   event.section   |   event.action
+    trigger             ,   schema_type ,   event.page  ,   event.section   ,   event.action
     
-    homeLoad            |   event       |   home        |                   |   load
+    homeLoad            ,   event       ,   home        ,                   ,   load
     
-    assist_clicked      |   event       |   devToProvide|                   |   click
+    assist_clicked      ,   event       ,   devToProvide,                   ,   click
     
     How this reads is this:
     For every row in the csv, for the trigger (ideally this keyword to be defined
