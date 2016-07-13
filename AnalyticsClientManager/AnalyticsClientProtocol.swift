@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc  protocol AnalyticsClientProtocol {
+@objc public protocol AnalyticsClientProtocol {
     func setup()
     func sendEvent(props:[String: AnyObject])
 }

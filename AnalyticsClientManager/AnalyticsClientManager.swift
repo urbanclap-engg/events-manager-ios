@@ -8,18 +8,18 @@
 
 import Foundation
 
-typealias Channel = String
-typealias Config = [String: AnyObject]
-typealias Trigger = String
-typealias EventKey = String
-typealias PropertyKey = String
-typealias EventValue = String
-typealias CSVProperties = [EventKey: EventValue]
-typealias DevOverrides = [EventKey: PropertyKey]
+public typealias Channel = String
+public typealias Config = [String: AnyObject]
+public typealias Trigger = String
+public typealias EventKey = String
+public typealias PropertyKey = String
+public typealias EventValue = String
+public typealias CSVProperties = [EventKey: EventValue]
+public typealias DevOverrides = [EventKey: PropertyKey]
 
 let keywordDevToProvide = "devToProvide"
 
-class AnalyticsClientManager: NSObject {
+public class AnalyticsClientManager: NSObject {
     static var sharedInstance: AnalyticsClientManager?
     static var s_enableStrictKeyValidation:Bool = true
     static var s_enableAlertOnError:Bool = true
@@ -42,13 +42,13 @@ class AnalyticsClientManager: NSObject {
         }
     }
 
-    class func initialize(channelConfigs: [Channel: Config],
+    public class func initialize(channelConfigs: [Channel: Config],
                           triggerEventMappings: [Trigger: [Channel: DevOverrides]]) {
         initialize(channelConfigs,
                    triggerEventMappings: triggerEventMappings)
     }
     
-    class func initialize(channelConfigs: [Channel: Config],
+    public class func initialize(channelConfigs: [Channel: Config],
                           triggerEventMappings: [Trigger: [Channel: DevOverrides]],
                           enableStrictKeyValidation: Bool,
                           enableAlertOnError: Bool) {
@@ -78,7 +78,7 @@ class AnalyticsClientManager: NSObject {
      bundle:
      NSBundle to use where csv files are from. If not there then uses mainBundle.
      */
-    class func initialize(channelConfigs: [Channel: Config],
+    public class func initialize(channelConfigs: [Channel: Config],
                           triggerEventMappings: [Trigger: [Channel: DevOverrides]],
                           enableStrictKeyValidation: Bool,
                           enableAlertOnError: Bool,
@@ -98,7 +98,7 @@ class AnalyticsClientManager: NSObject {
         }
     }
     
-    class func tearDown() {
+    public class func tearDown() {
         if (sharedInstance != nil) {
             sharedInstance = nil
         }
@@ -141,7 +141,7 @@ class AnalyticsClientManager: NSObject {
         }
     }
     
-    class func triggerEvent(trigger: String, props: [String: AnyObject]?) {
+    public class func triggerEvent(trigger: String, props: [String: AnyObject]?) {
         if let sharedInstance = sharedInstance {
            sharedInstance.triggerEvent(trigger, props: props)
         } else {
