@@ -66,7 +66,8 @@ class AnalyticsClientManagerTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         let testChannel = TestChannel()
-        let channelConfigs:[Channel: Config] = ["testChannel" : ["csvFile" : "testChannelEvents", "client" : testChannel]]
+        let testChannelConfig = ChannelConfig(csvFile: "testChannelEvents", channelClient: testChannel)
+        let channelConfigs:[Channel: ChannelConfig] = ["testChannel" : testChannelConfig]
         let triggerEvents = ["trigger1" : ["testChannel" : [String:String]()],
                              "trigger2" : ["testChannel" : ["eventKey2":"devOverridenKey2"]],
                              "trigger3" : ["testChannel" : ["keyParent.keyChild" : "devOverridenParent.devOverridenChild"]]]
@@ -127,7 +128,8 @@ class AnalyticsClientManagerTests: XCTestCase {
     
     func testExample2() {
         let testChannel = TestChannel()
-        let channelConfigs:[Channel: Config] = ["testChannel" : ["csvFile" : "testChannelEvents", "client" : testChannel]]
+        let testChannelConfig = ChannelConfig(csvFile: "testChannelEvents", channelClient: testChannel)
+        let channelConfigs:[Channel: ChannelConfig] = ["testChannel" : testChannelConfig]
         let triggerEvents = ["trigger2" : ["testChannel" : [String:String]()]]
         AnalyticsClientManager.initialize(channelConfigs,
                                           triggerEventMappings: triggerEvents,
@@ -144,7 +146,8 @@ class AnalyticsClientManagerTests: XCTestCase {
     
     func testStrictKeyValidation() {
         let testChannel = TestChannel()
-        let channelConfigs:[Channel: Config] = ["testChannel" : ["csvFile" : "testChannelEvents", "client" : testChannel]]
+        let testChannelConfig = ChannelConfig(csvFile: "testChannelEvents", channelClient: testChannel)
+        let channelConfigs:[Channel: ChannelConfig] = ["testChannel" : testChannelConfig]
         let triggerEvents = ["trigger2" : ["testChannel" : [String:String]()]]
         AnalyticsClientManager.initialize(channelConfigs,
                                           triggerEventMappings: triggerEvents,

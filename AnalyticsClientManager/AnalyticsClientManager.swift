@@ -9,7 +9,6 @@
 import Foundation
 
 public typealias Channel = String
-public typealias Config = [String: AnyObject]
 public typealias Trigger = String
 public typealias EventKey = String
 public typealias PropertyKey = String
@@ -18,6 +17,17 @@ public typealias CSVProperties = [EventKey: EventValue]
 public typealias DevOverrides = [EventKey: PropertyKey]
 
 let keywordDevToProvide = "devToProvide"
+
+public class ChannelConfig: NSObject {
+    var csvFile: String?
+    var channelClient : AnalyticsClientProtocol?
+    
+    public init(csvFile: String,
+                channelClient: AnalyticsClientProtocol) {
+        self.csvFile = csvFile
+        self.channelClient = channelClient
+    }
+}
 
 public class AnalyticsClientManager: NSObject {
     static var sharedInstance: AnalyticsClientManager?
@@ -42,13 +52,13 @@ public class AnalyticsClientManager: NSObject {
         }
     }
 
-    public class func initialize(channelConfigs: [Channel: Config],
+    public class func initialize(channelConfigs: [Channel: ChannelConfig],
                           triggerEventMappings: [Trigger: [Channel: DevOverrides]]) {
         initialize(channelConfigs,
                    triggerEventMappings: triggerEventMappings)
     }
     
-    public class func initialize(channelConfigs: [Channel: Config],
+    public class func initialize(channelConfigs: [Channel: ChannelConfig],
                           triggerEventMappings: [Trigger: [Channel: DevOverrides]],
                           enableStrictKeyValidation: Bool,
                           enableAlertOnError: Bool) {
@@ -78,7 +88,7 @@ public class AnalyticsClientManager: NSObject {
      bundle:
      NSBundle to use where csv files are from. If not there then uses mainBundle.
      */
-    public class func initialize(channelConfigs: [Channel: Config],
+    public class func initialize(channelConfigs: [Channel: ChannelConfig],
                           triggerEventMappings: [Trigger: [Channel: DevOverrides]],
                           enableStrictKeyValidation: Bool,
                           enableAlertOnError: Bool,
@@ -104,16 +114,16 @@ public class AnalyticsClientManager: NSObject {
         }
     }
     
-    private init(channelConfigs: [Channel: Config],
+    private init(channelConfigs: [Channel: ChannelConfig],
                  triggerEventMappings: [Trigger: [Channel: DevOverrides]]) {
-        for (channel, config) in channelConfigs {
-            let csvFile = config["csvFile"] as? String
+        for (channel, channelConfig) in channelConfigs {
+            let csvFile = channelConfig.csvFile
             if (csvFile == nil) {
-                AnalyticsClientManager.logError("missing csv file for config: \(config)")
+                AnalyticsClientManager.logError("missing csv file for config for channel: \(channel)")
                 continue
             }
             
-            if let channelClient = config["client"] as? AnalyticsClientProtocol {
+            if let channelClient = channelConfig.channelClient {
                 self.channelTriggerMappings[channel] = parseCSVFileIntoAnalyticEvents(AnalyticsClientManager.s_bundle, csvFile: csvFile)
                 AnalyticsClientManager.validateMissingChannelsForTriggers(channel,
                                                                           channelTriggers: self.channelTriggerMappings[channel],
@@ -121,7 +131,7 @@ public class AnalyticsClientManager: NSObject {
                 channelClient.setup()
                 self.channelClientObjects[channel] = channelClient
             } else {
-                AnalyticsClientManager.logError("client for config: \(config) is not of AnalyticsClientProtocol")
+                AnalyticsClientManager.logError("client for config for channel: \(channel) is not of AnalyticsClientProtocol")
                 continue
             }
         }
