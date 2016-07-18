@@ -55,7 +55,9 @@ public class AnalyticsClientManager: NSObject {
     public class func initialize(channelConfigs: [Channel: ChannelConfig],
                           triggerEventMappings: [Trigger: [Channel: DevOverrides]]) {
         initialize(channelConfigs,
-                   triggerEventMappings: triggerEventMappings)
+                   triggerEventMappings: triggerEventMappings,
+                   enableStrictKeyValidation: true,
+                   enableAlertOnError: true)
     }
     
     public class func initialize(channelConfigs: [Channel: ChannelConfig],
