@@ -1,6 +1,9 @@
 AnalyticsClientManager
 
 Changelog:
+0.3.0
+- Updating pod version
+
 0.2.0
 - Fixing initialization 
 
@@ -12,10 +15,10 @@ How to develop? (Detailed instructions here: https://www.raywenderlich.com/99386
 2. To test changes locally, you can include this pod as a development local pod
    eg. #pod 'AnalyticsClientManager', :path=> '~/projects/AnalyticsClientManager'
 3. Run/update unit tests in the project and make sure they pass.
-4. Update podspec file, change atleast version number there.
+4. Update podspec file, change version number and s.source tag
 5. Update changelog in readme here.
 6. Add a tag with this commit for this version number ie 
-       git tag 0.1.0
+       git tag 0.3.0
        git push -u origin master --tags
 7. Get this code merged in master after MR etc.
 8. From master branch, update the pod repo ie:
