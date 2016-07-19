@@ -1,5 +1,29 @@
 AnalyticsClientManager
 
+Changelog:
+0.2.0
+- Fixing initialization 
+
+0.1.0
+- Initial setup.
+
+How to develop? (Detailed instructions here: https://www.raywenderlich.com/99386/create-cocoapod-swift)
+1. Clone this repo locally.
+2. To test changes locally, you can include this pod as a development local pod
+   eg. #pod 'AnalyticsClientManager', :path=> '~/projects/AnalyticsClientManager'
+3. Run/update unit tests in the project and make sure they pass.
+4. Update podspec file, change atleast version number there.
+5. Update changelog in readme here.
+6. Add a tag with this commit for this version number ie 
+       git tag 0.1.0
+       git push -u origin master --tags
+7. Get this code merged in master after MR etc.
+8. From master branch, update the pod repo ie:
+    pod repo add AnalyticsClientManager [Your AnalyticsClientManager Git URL] {need to do only once}
+    pod repo push AnalyticsClientManager AnalyticsClientManager.podspec
+9. Finally, communicate to client teams, that there is an update to this and they
+   can update their pod file.
+
 More details here: https://urbanclap.atlassian.net/wiki/display/ENGG/Client+side+Event+Manager
 How to use:
 
