@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CSwiftV
 
 func parseCSVFileIntoAnalyticEvents(_ bundle: Bundle?, csvFile: String?) -> [String: [String: String]]{
     let keywordTrigger = "trigger"
@@ -23,7 +22,7 @@ func parseCSVFileIntoAnalyticEvents(_ bundle: Bundle?, csvFile: String?) -> [Str
         print("Error: parsing csv file: \(csvFile)")
         textFile = ""
     }
-    let csv = CSwiftV(string: textFile)
+    let csv = CSwiftV(with: textFile)
     let headers = csv.headers
     if (!headers.contains(keywordTrigger)) {
         print("Error: csv file: \(csvFile) needs to have trigger column")
