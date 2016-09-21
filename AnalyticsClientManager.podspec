@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.name         = "AnalyticsClientManager"
   s.platform     = :ios
   s.ios.deployment_target = '8.0'
-  s.version      = "0.3.0"
+  s.version      = "0.4.0"
   s.summary      = "Analytics Client Manager for ios"
 
   # This description is used to generate tags and improve search results.
@@ -79,7 +79,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://gitlab.urbanclap.com/urbanclap/analytics-client-manager-ios.git", :tag => "0.3.0" }
+  s.source       = { :git => "https://gitlab.urbanclap.com/urbanclap/analytics-client-manager-ios.git", :tag => "0.4.0" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -91,7 +91,5 @@ Pod::Spec.new do |s|
   #
 
   s.source_files  = "AnalyticsClientManager", "AnalyticsClientManager/**/*.{h,m,swift}"
-
-    s.dependency 'CSwiftV'
 
 end
