@@ -10,5 +10,5 @@ import Foundation
 
 @objc public protocol AnalyticsClientProtocol {
     func setup()
-    func sendEvent(props:[String: AnyObject])
+    func sendEvent(_ props:[String: AnyObject])
 }

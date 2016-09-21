@@ -9,10 +9,10 @@
 import Foundation
 import CSwiftV
 
-func parseCSVFileIntoAnalyticEvents(bundle: NSBundle?, csvFile: String?) -> [String: [String: String]]{
+func parseCSVFileIntoAnalyticEvents(_ bundle: Bundle?, csvFile: String?) -> [String: [String: String]]{
     let keywordTrigger = "trigger"
     
-    let fileLocation = bundle?.pathForResource(csvFile, ofType: "csv")
+    let fileLocation = bundle?.path(forResource: csvFile, ofType: "csv")
     let textFile : String
     do
     {
@@ -40,7 +40,7 @@ func parseCSVFileIntoAnalyticEvents(bundle: NSBundle?, csvFile: String?) -> [Str
         }
         let trigger = keyedRow[keywordTrigger]!
         var tmpKeyedRow = keyedRow
-        tmpKeyedRow.removeValueForKey(keywordTrigger)
+        tmpKeyedRow.removeValue(forKey: keywordTrigger)
         rtn[trigger] = tmpKeyedRow
     }
     return rtn
