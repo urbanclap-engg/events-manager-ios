@@ -31,8 +31,8 @@ open class ChannelConfig: NSObject {
 
 open class AnalyticsClientManager: NSObject {
     static var sharedInstance: AnalyticsClientManager?
-    static var s_enableStrictKeyValidation:Bool = true
-    static var s_enableAlertOnError:Bool = true
+    static var s_enableStrictKeyValidation:Bool = false
+    static var s_enableAlertOnError:Bool = false
     static var s_bundle: Bundle?
     
     var channelTriggerMappings:[Channel: [Trigger: CSVProperties]] = [:] // channel-> dictionary with trigger as key
