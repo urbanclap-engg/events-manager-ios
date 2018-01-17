@@ -191,33 +191,27 @@ open class AnalyticsClientManager: NSObject {
                     guard let propsKey = devOverrides[eventKey] else {
                         isMissingKey = true
                         AnalyticsClientManager.logError("eventKey: \(eventKey) needs to be overriden for channel: \(channel) and trigger: \(trigger)")
-                        break
+                        continue
                     }
                     guard let propsObj = props else {
                         isMissingKey = true
                         AnalyticsClientManager.logError("event trigger properties for channel: \(channel) trigger:\(trigger) is not provided")
-                        break
+                        continue
                     }
                     guard let val = getValueInMultiLevelDict(propsObj as AnyObject, multiLevelKey: propsKey) else {
                         isMissingKey = true
                         AnalyticsClientManager.logError("path for key: \(propsKey) not present in props: \(props) for channel: \(channel) trigger:\(trigger)")
-                        break
+                        continue
                     }
-                    if (AnalyticsClientManager.setValueInMultiLevelDict(&eventProps, multiLevelKey: eventKey, val: val)) {
-                        // all good
-                    } else {
+                    if (!AnalyticsClientManager.setValueInMultiLevelDict(&eventProps, multiLevelKey: eventKey, val: val)) {
                         isMissingKey = true
                         AnalyticsClientManager.logError("unable to set value for key: \(eventKey) in eventProps: \(eventProps)")
-                        break
                     }
                 } else {
                     // non dev provided.
-                    if (AnalyticsClientManager.setValueInMultiLevelDict(&eventProps, multiLevelKey: eventKey, val: eventValue as AnyObject)) {
-                        // all good
-                    } else {
+                    if (!AnalyticsClientManager.setValueInMultiLevelDict(&eventProps, multiLevelKey: eventKey, val: eventValue as AnyObject)) {
                         isMissingKey = true
                         AnalyticsClientManager.logError("unable to set csv value for key: \(eventKey) in eventProps: \(eventProps) for channel: \(channel) trigger:\(trigger)")
-                        break
                     }
                 }
             }
