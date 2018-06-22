@@ -11,5 +11,3 @@ target 'AnalyticsClientManagerTests' do
 
 end
 
-pod 'CSwiftV'
-

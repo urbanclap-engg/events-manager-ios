@@ -18,7 +18,7 @@ public typealias DevOverrides = [EventKey: PropertyKey]
 
 let keywordDevToProvide = "devToProvide"
 
-public class ChannelConfig: NSObject {
+open class ChannelConfig: NSObject {
     var csvFile: String?
     var channelClient : AnalyticsClientProtocol?
     
@@ -29,21 +29,21 @@ public class ChannelConfig: NSObject {
     }
 }
 
-public class AnalyticsClientManager: NSObject {
+open class AnalyticsClientManager: NSObject {
     static var sharedInstance: AnalyticsClientManager?
-    static var s_enableStrictKeyValidation:Bool = true
-    static var s_enableAlertOnError:Bool = true
-    static var s_bundle: NSBundle?
+    static var s_enableStrictKeyValidation:Bool = false
+    static var s_enableAlertOnError:Bool = false
+    static var s_bundle: Bundle?
     
     var channelTriggerMappings:[Channel: [Trigger: CSVProperties]] = [:] // channel-> dictionary with trigger as key
     var channelClientObjects:[Channel: AnalyticsClientProtocol] = [:]
     var triggerEventMappings:[Trigger: [Channel: DevOverrides]] = [:] // trigger-> dictionary with channel as keys and overrides as values
     
-    private class func logError(errorString: String) {
+    fileprivate class func logError(_ errorString: String) {
             logError(errorString, isAlert: true)
     }
     
-    private class func logError(errorString: String, isAlert: Bool) {
+    fileprivate class func logError(_ errorString: String, isAlert: Bool) {
         print("AnalyticsError: \(errorString)")
         if (s_enableAlertOnError && isAlert) {
             // todo: alert
@@ -52,7 +52,7 @@ public class AnalyticsClientManager: NSObject {
         }
     }
 
-    public class func initialize(channelConfigs: [Channel: ChannelConfig],
+    open class func initialize(_ channelConfigs: [Channel: ChannelConfig],
                           triggerEventMappings: [Trigger: [Channel: DevOverrides]]) {
         initialize(channelConfigs,
                    triggerEventMappings: triggerEventMappings,
@@ -60,7 +60,7 @@ public class AnalyticsClientManager: NSObject {
                    enableAlertOnError: true)
     }
     
-    public class func initialize(channelConfigs: [Channel: ChannelConfig],
+    open class func initialize(_ channelConfigs: [Channel: ChannelConfig],
                           triggerEventMappings: [Trigger: [Channel: DevOverrides]],
                           enableStrictKeyValidation: Bool,
                           enableAlertOnError: Bool) {
@@ -68,7 +68,7 @@ public class AnalyticsClientManager: NSObject {
                    triggerEventMappings: triggerEventMappings,
                    enableStrictKeyValidation: enableStrictKeyValidation,
                    enableAlertOnError: enableAlertOnError,
-                   bundle: NSBundle.mainBundle())
+                   bundle: Bundle.main)
     }
     
     /*
@@ -90,18 +90,18 @@ public class AnalyticsClientManager: NSObject {
      bundle:
      NSBundle to use where csv files are from. If not there then uses mainBundle.
      */
-    public class func initialize(channelConfigs: [Channel: ChannelConfig],
+    open class func initialize(_ channelConfigs: [Channel: ChannelConfig],
                           triggerEventMappings: [Trigger: [Channel: DevOverrides]],
                           enableStrictKeyValidation: Bool,
                           enableAlertOnError: Bool,
-                          bundle: NSBundle) {
+                          bundle: Bundle) {
         // TODO: make it thread safe
         if (sharedInstance == nil) {
             s_enableAlertOnError = enableAlertOnError
             s_enableStrictKeyValidation = enableStrictKeyValidation
             s_bundle = bundle
             if (s_bundle == nil) {
-                s_bundle = NSBundle.mainBundle()
+                s_bundle = Bundle.main
             }
             sharedInstance = AnalyticsClientManager(channelConfigs: channelConfigs,
                                                     triggerEventMappings: triggerEventMappings)
@@ -110,13 +110,13 @@ public class AnalyticsClientManager: NSObject {
         }
     }
     
-    public class func tearDown() {
+    open class func tearDown() {
         if (sharedInstance != nil) {
             sharedInstance = nil
         }
     }
     
-    private init(channelConfigs: [Channel: ChannelConfig],
+    fileprivate init(channelConfigs: [Channel: ChannelConfig],
                  triggerEventMappings: [Trigger: [Channel: DevOverrides]]) {
         for (channel, channelConfig) in channelConfigs {
             let csvFile = channelConfig.csvFile
@@ -140,7 +140,7 @@ public class AnalyticsClientManager: NSObject {
         self.triggerEventMappings = triggerEventMappings
     }
     
-    private class func validateMissingChannelsForTriggers(channel:Channel,
+    fileprivate class func validateMissingChannelsForTriggers(_ channel:Channel,
                                                           channelTriggers:[Trigger : CSVProperties]?,
                                                           triggerEventMappings:[Trigger: [Channel: DevOverrides]]) {
         guard let channelTriggers = channelTriggers else {
@@ -153,7 +153,7 @@ public class AnalyticsClientManager: NSObject {
         }
     }
     
-    public class func triggerEvent(trigger: String, props: [String: AnyObject]?) {
+    open class func triggerEvent(_ trigger: String, props: [String: AnyObject]?) {
         if let sharedInstance = sharedInstance {
            sharedInstance.triggerEvent(trigger, props: props)
         } else {
@@ -161,7 +161,7 @@ public class AnalyticsClientManager: NSObject {
         }
     }
     
-    private func triggerEvent(trigger: Trigger, props: [String: AnyObject]?) {
+    fileprivate func triggerEvent(_ trigger: Trigger, props: [String: AnyObject]?) {
         // go through all the channels associated with the trigger, construct props, and send events.
         guard let triggerSpecificMappings = self.triggerEventMappings[trigger] else {
             AnalyticsClientManager.logError("trigger: \(trigger) not present in trigger mappings provided")
@@ -191,33 +191,27 @@ public class AnalyticsClientManager: NSObject {
                     guard let propsKey = devOverrides[eventKey] else {
                         isMissingKey = true
                         AnalyticsClientManager.logError("eventKey: \(eventKey) needs to be overriden for channel: \(channel) and trigger: \(trigger)")
-                        break
+                        continue
                     }
                     guard let propsObj = props else {
                         isMissingKey = true
                         AnalyticsClientManager.logError("event trigger properties for channel: \(channel) trigger:\(trigger) is not provided")
-                        break
+                        continue
                     }
-                    guard let val = getValueInMultiLevelDict(propsObj, multiLevelKey: propsKey) else {
+                    guard let val = getValueInMultiLevelDict(propsObj as AnyObject, multiLevelKey: propsKey) else {
                         isMissingKey = true
                         AnalyticsClientManager.logError("path for key: \(propsKey) not present in props: \(props) for channel: \(channel) trigger:\(trigger)")
-                        break
+                        continue
                     }
-                    if (AnalyticsClientManager.setValueInMultiLevelDict(&eventProps, multiLevelKey: eventKey, val: val)) {
-                        // all good
-                    } else {
+                    if (!AnalyticsClientManager.setValueInMultiLevelDict(&eventProps, multiLevelKey: eventKey, val: val)) {
                         isMissingKey = true
                         AnalyticsClientManager.logError("unable to set value for key: \(eventKey) in eventProps: \(eventProps)")
-                        break
                     }
                 } else {
                     // non dev provided.
-                    if (AnalyticsClientManager.setValueInMultiLevelDict(&eventProps, multiLevelKey: eventKey, val: eventValue)) {
-                        // all good
-                    } else {
+                    if (!AnalyticsClientManager.setValueInMultiLevelDict(&eventProps, multiLevelKey: eventKey, val: eventValue as AnyObject)) {
                         isMissingKey = true
                         AnalyticsClientManager.logError("unable to set csv value for key: \(eventKey) in eventProps: \(eventProps) for channel: \(channel) trigger:\(trigger)")
-                        break
                     }
                 }
             }
@@ -228,11 +222,11 @@ public class AnalyticsClientManager: NSObject {
     }
     
     // multiLevelKey is . separted
-    private func getValueInMultiLevelDict(dict: AnyObject, multiLevelKey: String) -> AnyObject? {
-        let levelKeys = multiLevelKey.componentsSeparatedByString(".")
+    fileprivate func getValueInMultiLevelDict(_ dict: AnyObject, multiLevelKey: String) -> AnyObject? {
+        let levelKeys = multiLevelKey.components(separatedBy: ".")
         var currentObj:AnyObject = dict
         for levelKey in levelKeys {
-            if let currentObjDict = currentObj as? [String: AnyObject], currentObjChild = currentObjDict[levelKey] {
+            if let currentObjDict = currentObj as? [String: AnyObject], let currentObjChild = currentObjDict[levelKey] {
                 currentObj = currentObjChild
             } else {
                 return nil
@@ -241,7 +235,7 @@ public class AnalyticsClientManager: NSObject {
         return currentObj
     }
     
-    class func setValueInMultiLevelDictHelper(inout dict:[String: AnyObject], i: Int, levelKeys:[String], val:AnyObject) -> Bool {
+    class func setValueInMultiLevelDictHelper(_ dict:inout [String: AnyObject], i: Int, levelKeys:[String], val:AnyObject) -> Bool {
         let levelKey = levelKeys[i]
         if (levelKey.isEmpty) {
             return false
@@ -254,7 +248,7 @@ public class AnalyticsClientManager: NSObject {
                 if var dictChildAsDict = dictChild as? [String: AnyObject] {
                     // if its already a dict
                     if setValueInMultiLevelDictHelper(&dictChildAsDict, i: i+1, levelKeys: levelKeys, val: val) {
-                        dict[levelKey] = dictChildAsDict
+                        dict[levelKey] = dictChildAsDict as AnyObject?
                         return true
                     } else {
                         return false
@@ -268,7 +262,7 @@ public class AnalyticsClientManager: NSObject {
                 // create a new child at this level
                 var newChild = [String: AnyObject]()
                 if setValueInMultiLevelDictHelper(&newChild, i: i+1, levelKeys: levelKeys, val: val) {
-                    dict[levelKey] = newChild
+                    dict[levelKey] = newChild as AnyObject?
                     return true
                 } else {
                     return false
@@ -278,8 +272,8 @@ public class AnalyticsClientManager: NSObject {
         }
     }
     
-    class func setValueInMultiLevelDict(inout dict: [String: AnyObject], multiLevelKey: String, val: AnyObject) -> Bool {
-        return setValueInMultiLevelDictHelper(&dict, i: 0, levelKeys: multiLevelKey.componentsSeparatedByString("."), val: val)
+    class func setValueInMultiLevelDict(_ dict: inout [String: AnyObject], multiLevelKey: String, val: AnyObject) -> Bool {
+        return setValueInMultiLevelDictHelper(&dict, i: 0, levelKeys: multiLevelKey.components(separatedBy: "."), val: val)
     }
 }
 
