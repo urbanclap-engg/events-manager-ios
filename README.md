@@ -12,7 +12,7 @@ How to develop? (Detailed instructions here: https://www.raywenderlich.com/99386
 1.  Clone this repo locally.
 2.  To test changes locally, you can include this pod as a development local pod
 ```sh
-pod 'AnalyticsClientManager', :path=> '~/projects/AnalyticsClientManager' 
+pod 'AnalyticsClientManager'
 ```
 3. Run/update unit tests in the project and make sure they pass.
 4. Add a tag with this commit for this version number
