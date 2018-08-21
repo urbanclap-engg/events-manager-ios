@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.homepage     = "https://gitlab.urbanclap.com/urbanclap/analytics-client-manager-ios"
+  s.homepage     = "https://github.com/awasthiy/events-manager-ios.git"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -79,7 +79,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://gitlab.urbanclap.com/urbanclap/analytics-client-manager-ios.git", :tag => "0.4.0" }
+  s.source       = { :git => "https://github.com/awasthiy/events-manager-ios.git", :tag => "0.1.0" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
