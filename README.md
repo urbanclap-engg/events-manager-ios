@@ -1,10 +1,9 @@
 # Analytics Client Manager
 
-
 Analytics client manager is a csv based events SDK which can be used to set up Analytics for your application. 
 
 ## Getting Started
----
+
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ## Prerequisites
@@ -48,6 +47,7 @@ Also the dot (.) separator is used in keys to introduce heirarchy.
 
 - For each channel, define a class that conforms to protocol AnalyticsClientProtocol.
 Eg. Define a class UCServerEventsManager. Implement the two methods.
+
 ```sh
     import AnalyticsClientManager
         
@@ -67,16 +67,16 @@ of methods, just delegate to the Mixpanel SDK
 - In code, define a class something like AnalyticsConstant.swift
 
 ```sh
-        enum AnalyticsChannel: Channel {
-            case UCSERVER
-            case MIXPANEL
-        }
+     enum AnalyticsChannel: Channel {
+        case UCSERVER
+        case MIXPANEL
+    }
         
-        let channelConfigs: [Channel: ChannelConfig] =
-            [
-                AnalyticsChannel.UCSERVER.rawValue: ChannelConfig(csvFile: "ucserverevents_ios", channelClient: UCServerEventsManager()),
-                AnalyticsChannel.MIXPANEL.rawValue: ChannelConfig(csvFile: "mixpanel_ios", channelClient: MixPanelEventsManager()),
-            ]
+    let channelConfigs: [Channel: ChannelConfig] =
+    [
+            AnalyticsChannel.UCSERVER.rawValue: ChannelConfig(csvFile: "ucserverevents_ios", channelClient: UCServerEventsManager()),
+            AnalyticsChannel.MIXPANEL.rawValue: ChannelConfig(csvFile: "mixpanel_ios", channelClient: MixPanelEventsManager()),
+    ]
 ```
 
 - Define the triggerMappings structure. Maps each trigger from triggername to 
@@ -106,14 +106,19 @@ let triggerMappings : [Trigger: [Channel: DevOverrides]] = [
     AnalyticsTriggers.assist_clicked.rawValue : assistClickedMapping
 ]
 
-/* Custom class for Sending events */
+/* Custom class for sending events */
 
 class ExampleEventManager :  AnalyticsClientManager {
         class func triggerEvent(_ trigger: AnalyticsTriggers, props: [String: AnyObject]?) {
                 triggerEvent(trigger.rawValue, props: props)
             }
+}
             
 ```
+In the above example, we have set up that for home load trigger, its supposed
+to send events to uc server and mixpanel. For assist clicked, its supposed to
+send events to uc server only.
+
 
 #### Setup
 
@@ -122,8 +127,9 @@ class ExampleEventManager :  AnalyticsClientManager {
 
 #### Triggering Events
 - Figure out in code whats the right place to trigger the event. And pass in the correct properties to be parsed by the Manger. Example: 
+
 ```sh
- /* Sending Events From  Trigger Point */
+ /* Sending Events From trigger point */
 
 class HomeViewController : UIViewController {
 
@@ -137,10 +143,8 @@ class HomeViewController : UIViewController {
     
     @IBAction func actionBtnClicked( _ : UIButton) {
         ExampleEventManager.triggerEvent(AnalyticsTriggers.home_page_load,
-                                        props : ["pageValue" : "HomeScreen"])
+                                        props : ["pageValue" : "YourValue"])
     }
 }
 ```
-IF any of the clients want to append more properties thats upto them.
-
-
+If any of the clients want to append more properties thats upto them.
