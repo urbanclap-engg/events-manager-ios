@@ -1,0 +1,3 @@
+trigger,schema_type,event.page,event.section,event.action
+homeLoad,event,home,,load
+assist_clicked,event,devToProvide,,click
