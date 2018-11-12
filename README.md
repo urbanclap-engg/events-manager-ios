@@ -23,7 +23,7 @@ this new architecture. Eg, UCServer, Mixpanel, Facebook, etc.
 all the triggers that channel is supporting and what keys/values to expect
 for that trigger. For example, for UCServer, create a UCServerEvents.csv, 
 which could look something like this:
-[RAW CSV](http://github.com)
+[RAW CSV](https://github.com/awasthiy/events-manager-ios/blob/master/sample.csv)
 
 | trigger | schema_type | event.page | event.section | event.action |
 | ------ | ------ | ------ | ------ | ------ |
