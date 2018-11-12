@@ -9,17 +9,10 @@ These instructions will get you a copy of the project up and running on your loc
 ## Prerequisites
 How to develop? (Detailed instructions here: https://www.raywenderlich.com/99386/create-cocoapod-swift)
 
-1.  Clone this repo locally.
-2.  To test changes locally, you can include this pod as a development local pod
+To test changes locally, you can include this pod as a development local pod in your podfile
 ```sh
 pod 'AnalyticsClientManager'
 ```
-3. Run/update unit tests in the project and make sure they pass.
-4. Add a tag with this commit for this version number
-```sh
-git tag 0.3.0 git push -u origin master --tags
-```
-5. Commit to master here. 
 
 ## Presetup
 
