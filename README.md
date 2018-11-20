@@ -9,17 +9,10 @@ These instructions will get you a copy of the project up and running on your loc
 ## Prerequisites
 How to develop? (Detailed instructions here: https://www.raywenderlich.com/99386/create-cocoapod-swift)
 
-1.  Clone this repo locally.
-2.  To test changes locally, you can include this pod as a development local pod
+To test changes locally, you can include this pod as a development local pod in your podfile
 ```sh
 pod 'AnalyticsClientManager'
 ```
-3. Run/update unit tests in the project and make sure they pass.
-4. Add a tag with this commit for this version number
-```sh
-git tag 0.3.0 git push -u origin master --tags
-```
-5. Commit to master here. 
 
 ## Presetup
 
@@ -30,7 +23,7 @@ this new architecture. Eg, UCServer, Mixpanel, Facebook, etc.
 all the triggers that channel is supporting and what keys/values to expect
 for that trigger. For example, for UCServer, create a UCServerEvents.csv, 
 which could look something like this:
-[RAW CSV](http://github.com)
+[RAW CSV](https://github.com/awasthiy/events-manager-ios/blob/master/sample.csv)
 
 | trigger | schema_type | event.page | event.section | event.action |
 | ------ | ------ | ------ | ------ | ------ |
